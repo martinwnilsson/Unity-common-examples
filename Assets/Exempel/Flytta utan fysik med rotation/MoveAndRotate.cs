@@ -5,9 +5,9 @@ using UnityEngine;
 public class MoveAndRotate : MonoBehaviour
 {
     public float moveSpeed = 3f; // units/s
-    public float steerSpeed = Mathf.PI; // radians/s - hur mycket vinkeln kan ändras/s    
+    public float steerSpeed = 45f; // grader/s - hur mycket vinkeln kan ändras/s    
 
-    private float steerAngle = 0; // aktuell förflyttningsvinkel i radianer
+    //private float steerAngle = 0; // aktuell förflyttningsvinkel i radianer
 
     // Start is called before the first frame update
     void Start()
@@ -18,8 +18,10 @@ public class MoveAndRotate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // ändrar hastighetsriktning med input-horizontal
-        steerAngle = steerAngle + (Input.GetAxis("Horizontal") * steerSpeed * Time.deltaTime);
+        // Tar fram en rotationsändring baserat på horisontell input och styr-hastighet
+        float steerAngle = steerSpeed * (Input.GetAxis("Horizontal") * Time.deltaTime);
+        // Rotate() roterar objekt X grader runt varje axel. Roterar runt Y (uppåt), 0 på övriga.
+        transform.Rotate(0, steerAngle, 0);
 
         // förvald hastighet, stå stilla
         float speed = 0;
@@ -37,22 +39,11 @@ public class MoveAndRotate : MonoBehaviour
             speed = moveSpeed * 2;
         }
 
-        // steerSpeed (length) och steerAngle (vinkel) på en triangel
-        // där dX och dZ (XZ är markplan i Unity) - som ska adderas på positionen - är katetrarna
-        float dX = Mathf.Sin(steerAngle) * speed * Time.deltaTime;
-        float dZ = Mathf.Cos(steerAngle) * speed * Time.deltaTime;
-
-        // hämtar nuvarande position
-        Vector3 orgPosition = transform.position;
-        // Skapa positions-vektor att addera till nuvarande position
-        Vector3 addPosition = new Vector3(dX, 0, dZ);
-        // skapar ny position och uppdaterar
-        Vector3 newPosition = orgPosition + addPosition;
-
-        // roterar efter aktuell riktning, "tittar" mot ny position
-        transform.LookAt(newPosition);
-        
-        // "lägger in" nya positionen
-        transform.position = newPosition;
+        // Translate() fungerar som Rotate() ovan, lägger till en förflyttningsposition till axlarna.
+        // flyttar i objektets riktning 'forward' (z+), riktningen får den från rotationen ovan.
+        // Vector3.forward = [0, 0, 1] och * t.ex 3 blir det [0, 0, 3] som läggs på nuvarande position
+        // Space.self betyder "forward" (z+) är efter objektets lokala koordinatsystem och inte världens.
+        Vector3 move = Vector3.forward * speed * Time.deltaTime;
+        transform.Translate(move, Space.Self);
     }
 }

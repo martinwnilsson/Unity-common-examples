@@ -29,9 +29,9 @@ public class MoveHuntOther : MonoBehaviour
             targetPosition = target.position;
         }
         
-        float moveStep = moveSpeed * Time.deltaTime;
+        float move = moveSpeed * Time.deltaTime;
 
-        Vector3 newPosition = Vector3.MoveTowards(transform.position, targetPosition, moveStep);
+        Vector3 newPosition = Vector3.MoveTowards(transform.position, targetPosition, move);
         transform.position = newPosition;
         transform.LookAt(targetPosition);
 

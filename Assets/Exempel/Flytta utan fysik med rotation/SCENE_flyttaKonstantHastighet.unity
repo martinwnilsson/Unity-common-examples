@@ -650,8 +650,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
-  steerAngle: 0
-  steerSpeed: 2.5
+  steerSpeed: 90
 --- !u!54 &5841857083204968634
 Rigidbody:
   m_ObjectHideFlags: 0

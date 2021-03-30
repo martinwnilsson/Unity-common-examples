@@ -15,6 +15,7 @@ public class ConstantRotate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(0, speed * Time.deltaTime, 0); //rotaterar speed runt y axeln (flytta speed för andra axlar)
+        float rotationToAdd = speed * Time.deltaTime;
+        transform.Rotate(0, rotationToAdd, 0); //rotaterar speed runt y axeln (flytta speed för andra axlar)
     }
 }

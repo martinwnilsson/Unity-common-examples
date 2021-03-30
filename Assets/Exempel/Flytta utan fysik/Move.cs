@@ -15,21 +15,11 @@ public class Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // läser av nuvarande
-        Vector3 oldPosition = transform.position;
-        
-        //Hämta mängd horisontell input, värde 0-1
-        //Vad det "Horizontal" och "Vertical" är för inputs ställs i Settings/input/axis, bl.a WASD som default
-        float horizontalInput = Input.GetAxis("Horizontal");
-        //Hämta mängd horisontell input, värde 0-1
-        float verticalInput = Input.GetAxis("Vertical");
+        float moveX = speed *Input.GetAxis("Horizontal") * Time.deltaTime;
+        float moveZ = speed * Input.GetAxis("Vertical") * Time.deltaTime;
 
-        // uppdaterar den nya positionen
-        float horizontalToAdd = horizontalInput * speed * Time.deltaTime;
-        float verticalToAdd = verticalInput * speed * Time.deltaTime;
-        // skapar positionToAdd som uppdaterar X och Z (på "marken"), byt till X och Y om rörelse i "upp-ner"-planet
-        Vector3 positionToAdd = new Vector3(horizontalToAdd, 0, verticalToAdd);
+        Vector3 move = new Vector3(moveX, 0, moveZ);
 
-        transform.position = oldPosition + positionToAdd;
+        transform.Translate(move, Space.World);
     }
 }
